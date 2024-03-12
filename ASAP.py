@@ -1,5 +1,8 @@
+from datetime import datetime, timedelta
+
 from Assignment import Assignment
 from Util import *
+
 
 class ASAPMethod:
     def __init__(self, schPlanner):
@@ -75,17 +78,14 @@ class ASAPMethod:
         assignment.productId = productStep.productId
         assignment.productStepId = productStep.productStepId
         assignment.operationType = resource.operationType
-        if productStep.previewStep:
-            if productStep.previewStep.isSchedule:
-                preTime = timestamp_to_minutes(productStep.previewStep.isSchedule.endTime)
-            else:
-                preTime = 0
+        if productStep.previousStep:
+            preTime = productStep.previousStep.isSchedule.endTime
         else:
-            preTime = 0
+            preTime = datetime(2000, 1, 1, 0, 0, 0)
         startTime = max(resource.earlyAvailableTime, preTime)
         prefixDuration = resource.calcPrefixDuration(productStep, self.data.products)
         processDuration = resource.calcProcessDuration(productStep, self.data.products)
-        assignment.calcTime(startTime, prefixDuration, processDuration)
+        assignment.setTime(startTime, prefixDuration, processDuration)
         # 更新相关变量
         self.assignments[assignment.assignmentId] = assignment
         resource.assignmentList.append(assignment)

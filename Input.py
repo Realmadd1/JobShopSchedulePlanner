@@ -1,5 +1,5 @@
 from typing import List, Optional
-import datetime
+from datetime import timedelta, datetime
 from Util import *
 from Assignment import Assignment
 
@@ -16,10 +16,11 @@ class Product:
         self.productSteps.append(productStep)
 
     def calcOrderOfSteps(self):
+        self.productSteps = sorted(self.productSteps, key=lambda x: x.sequenceNr)
+        preProductStep = None
         for productStep in self.productSteps:
-            for preProductStep in self.productSteps:
-                if preProductStep.sequenceNr + 1 == productStep.sequenceNr:
-                    productStep.previousStep = preProductStep
+            productStep.previousStep = preProductStep
+            productStep = productStep
 
 
 class Resource:
@@ -38,7 +39,7 @@ class Resource:
         :return:
         """
         if self.assignmentList:
-            self.earlyAvailableTime = timestamp_to_minutes(self.assignmentList[-1].endTime)
+            self.earlyAvailableTime = self.assignmentList[-1].endTime
 
     def calcPrefixDuration(self, productStep: "ProductStep", products: dict[str, Product]):
         """
@@ -49,11 +50,11 @@ class Resource:
         """
         if self.assignmentList:
             if products[productStep.productId].productType == products[self.assignmentList[-1].productId].productType:
-                return 0
+                return timedelta(0)
             else:
                 return productStep.processTime * 0.05
         else:
-            return 0
+            return timedelta(0)
 
     def calcProcessDuration(self, productStep: "ProductStep", products: dict[str, Product]):
         """
@@ -79,9 +80,9 @@ class Resource:
                     return productStep.processTime
             else:
                 if productStep.previousStep.isSchedule:
-                    previewAssignment = productStep.previousStep.isSchedule
-                    t1 = timestamp_to_minutes(previewAssignment.endTime)
-                    t2 = timestamp_to_minutes(self.assignmentList[-1].endTime)
+                    previousAssignment = productStep.previousStep.isSchedule
+                    t1 = previousAssignment.endTime
+                    t2 = self.assignmentList[-1].endTime
                     if t1 <= t2 and products[self.assignmentList[-1].productId].productType == \
                             products[productStep.productId].productType:
                         return productStep.processTime * 0.75
@@ -144,11 +145,12 @@ class ProductStep:
         self.productType: str = kwargs["productType"]                   # 产品类型
         self.operationType = kwargs["operationType"]                    # 工序类型
         self.sequenceNr: int = kwargs["sequenceNr"]                     # 加工顺序
-        self.processTime: float = kwargs["processTime"]                 # 处理时间
+        self.processTimeB: float = kwargs["processTimeB"]               # 输入数据处理时间
         self.processTimeUnit = kwargs["timeUnit"]                       # 处理时间的时间单位
+        self.processTime: timedelta = timedelta(0)    # 处理时间
         self.resourcesList: List[Resource] = []                         # 允许加工的机器资源
-        self.isSchedule: bool = False                                   # 是否被分配
-        self.previousStep: Optional["ProductStep"] = None                         # 前一个产品步骤
+        self.isSchedule: Optional[Assignment] = None                    # 是否被分配
+        self.previousStep: Optional["ProductStep"] = None               # 前一个产品步骤
         self.routingEarlyStart: datetime = datetime(2000, 1, 1, 0, 0, 0)  # 产品路线中最早可开始加工时间
         self.availableResourceList: List[Resource] = []                 # 可获得的机器资源
 
@@ -157,4 +159,9 @@ class ProductStep:
         for resource in resources.values():
             if resource.operationType == self.operationType:
                 self.resourcesList.append(resource)
+
+    # 计算处理时间
+    def calcProcessTime(self):
+        if self.processTimeUnit == "minute":
+            self.processTime = timedelta(self.processTimeB/(60*12))
 

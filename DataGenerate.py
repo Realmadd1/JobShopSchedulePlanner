@@ -1,5 +1,6 @@
 import json
 import random
+from datetime import datetime
 
 
 def generate_products():
@@ -60,13 +61,9 @@ def generate_resources():
         ("Welding", "weldingMachine", "Welding")
     ]
 
-    # # 如果定义的工序类型少于num_operation
-    # if len(operation_types) < num_operation:
-    #     raise "数据错误！缺少可处理工序的机器"
-
-    # 确保每个工序至少被分配一次
-    for i in range(min(resourceNum, operationNum)):
-        operationType, resourceName, operationTypeName = operation_types[i]
+    # 确保每个工序2个机器
+    for i in range(max(resourceNum, operationNum)):
+        operationType, resourceName, operationTypeName = operation_types[i % len(operation_types)]
 
         # 为每个资源生成唯一的随机startTime
         startTime = generate_random_time()
@@ -78,28 +75,13 @@ def generate_resources():
             "earlyStartTime": startTime
         })
 
-    # 如果资源数量超过工序数量
-    for i in range(operationNum, resourceNum):
-        # 随机选择工序类型和名称，保持一一对应
-        operationType, resourceName, operationTypeName = random.choice(operation_types)
-
-        # 为每个资源生成唯一的随机startTime
-        startTime = generate_random_time()
-        resources.append({
-            "resourceId": i + 1,
-            "resourceName": resourceName,
-            "operationTypeName": operationTypeName,
-            "operationType": operationType,
-            "earlyStartTime": startTime
-        })
-
     return resources
 
 
 # 生成数据
 productNum = 10  # 产品数量
-resourceNum = 5  # 机器数量
-operationNum = 8  # 工序数量
+resourceNum = 10  # 机器数量
+operationNum = 5  # 工序数量
 
 data = {
     "products": generate_products(),
@@ -113,6 +95,4 @@ json_data = json.dumps(data, indent=4)
 with open('instance.json', 'w') as f:
     json.dump(data, f, indent=4)
 
-# 保存到文件
-with open('instance.json', 'w') as f:
-    json.dump(data, f, indent=4)
+

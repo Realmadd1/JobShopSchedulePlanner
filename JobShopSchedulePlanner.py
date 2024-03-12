@@ -35,10 +35,12 @@ class JobShopSchedulePlanner:
                     productStepId=productDetail["productId"] + "-" + productStepDetail["operationType"] + "-" +
                     str(productStepDetail["sequenceNr"]), operationType=productStepDetail["operationType"],
                     productId=productDetail["productId"], productType=productDetail["productType"],
-                    sequenceNr=productStepDetail["sequenceNr"], processTime=productStepDetail["processTime"],
+                    sequenceNr=productStepDetail["sequenceNr"], processTimeB=productStepDetail["processTime"],
                     timeUnit=productStepDetail["timeUnit"]
                 )
-                product.addProductStep(productStep)  # 将产品步骤对象加入产品对象中
+                product.addProductStep(productStep)     # 将产品步骤对象加入产品对象中
+                productStep.calcProcessTime()           # 计算产品加工时间
+                self.productSteps[productStep.productStepId] = productStep
             # 计算每一组产品步骤中的前一个步骤
             product.calcOrderOfSteps()
 
@@ -48,7 +50,7 @@ class JobShopSchedulePlanner:
             resource = Resource(
                 resourceId=resourceDetail["resourceId"], resourceName=resourceDetail["resourceName"],
                 operationType=resourceDetail["operationType"], operationTypeName=resourceDetail["operationTypeName"],
-                earlyStartTime=resourceDetail["earlyStartTime"]
+                earlyStartTime=change_to_datetime(resourceDetail["earlyStartTime"])
             )
             self.resources[resource.resourceId] = resource
 
@@ -77,11 +79,11 @@ class JobShopSchedulePlanner:
         print("=================================完成数据读取======================================================")
         print("数据读取耗时：", time.time() - start)
         print("=================================尝试使用方法", solveType, "进行求解================================")
-        # start = time.time()
-        # if solveType == 1:
-        #     self.MIPModelSolve()
-        # elif solveType == 2:
-        #     self.ASAPMethodSolve()
+        start = time.time()
+        if solveType == 1:
+            self.MIPModelSolve()
+        elif solveType == 2:
+            self.ASAPMethodSolve()
         # print("=================================获得任务分配======================================================")
         # print("任务分配耗时：", time.time() - start)
         # print("===================================开始画图========================================================")
