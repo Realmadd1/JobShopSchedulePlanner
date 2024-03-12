@@ -100,13 +100,8 @@ def generate_resources():
 productNum = 10  # 产品数量
 resourceNum = 5  # 机器数量
 operationNum = 8  # 工序数量
-equipmentUtilization = 10  # 设备利用率权重
-completionTime = 1  # 完成时间权重
+
 data = {
-    "parameters": {
-        "equipmentUtilizationWeight": equipmentUtilization,
-        "completionTimeWeight": completionTime
-    },
     "products": generate_products(),
     "resources": generate_resources()
 }
