@@ -204,6 +204,211 @@
                     "timeUnit": "minute"
                 }
             ]
+        },
+        {
+            "productId": "P006",
+            "productType": "A",
+            "sequences": [
+                {
+                    "sequenceNr": 1,
+                    "operationType": "Drilling",
+                    "operationTypeName": "Drilling",
+                    "processTime": 24,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 2,
+                    "operationType": "Cutting",
+                    "operationTypeName": "Cutting",
+                    "processTime": 16,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 3,
+                    "operationType": "Grinding",
+                    "operationTypeName": "Grinding",
+                    "processTime": 10,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 4,
+                    "operationType": "Welding",
+                    "operationTypeName": "Welding",
+                    "processTime": 30,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 5,
+                    "operationType": "Milling",
+                    "operationTypeName": "Milling",
+                    "processTime": 20,
+                    "timeUnit": "minute"
+                }
+            ]
+        },
+        {
+            "productId": "P007",
+            "productType": "A",
+            "sequences": [
+                {
+                    "sequenceNr": 1,
+                    "operationType": "Drilling",
+                    "operationTypeName": "Drilling",
+                    "processTime": 24,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 2,
+                    "operationType": "Cutting",
+                    "operationTypeName": "Cutting",
+                    "processTime": 16,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 3,
+                    "operationType": "Grinding",
+                    "operationTypeName": "Grinding",
+                    "processTime": 10,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 4,
+                    "operationType": "Welding",
+                    "operationTypeName": "Welding",
+                    "processTime": 30,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 5,
+                    "operationType": "Milling",
+                    "operationTypeName": "Milling",
+                    "processTime": 20,
+                    "timeUnit": "minute"
+                }
+            ]
+        },
+        {
+            "productId": "P008",
+            "productType": "A",
+            "sequences": [
+                {
+                    "sequenceNr": 1,
+                    "operationType": "Drilling",
+                    "operationTypeName": "Drilling",
+                    "processTime": 24,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 2,
+                    "operationType": "Cutting",
+                    "operationTypeName": "Cutting",
+                    "processTime": 16,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 3,
+                    "operationType": "Grinding",
+                    "operationTypeName": "Grinding",
+                    "processTime": 10,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 4,
+                    "operationType": "Welding",
+                    "operationTypeName": "Welding",
+                    "processTime": 30,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 5,
+                    "operationType": "Milling",
+                    "operationTypeName": "Milling",
+                    "processTime": 20,
+                    "timeUnit": "minute"
+                }
+            ]
+        },
+        {
+            "productId": "P009",
+            "productType": "B",
+            "sequences": [
+                {
+                    "sequenceNr": 1,
+                    "operationType": "Drilling",
+                    "operationTypeName": "Drilling",
+                    "processTime": 19,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 2,
+                    "operationType": "Grinding",
+                    "operationTypeName": "Grinding",
+                    "processTime": 30,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 3,
+                    "operationType": "Cutting",
+                    "operationTypeName": "Cutting",
+                    "processTime": 30,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 4,
+                    "operationType": "Welding",
+                    "operationTypeName": "Welding",
+                    "processTime": 12,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 5,
+                    "operationType": "Milling",
+                    "operationTypeName": "Milling",
+                    "processTime": 23,
+                    "timeUnit": "minute"
+                }
+            ]
+        },
+        {
+            "productId": "P010",
+            "productType": "C",
+            "sequences": [
+                {
+                    "sequenceNr": 1,
+                    "operationType": "Grinding",
+                    "operationTypeName": "Grinding",
+                    "processTime": 17,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 2,
+                    "operationType": "Drilling",
+                    "operationTypeName": "Drilling",
+                    "processTime": 30,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 3,
+                    "operationType": "Milling",
+                    "operationTypeName": "Milling",
+                    "processTime": 15,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 4,
+                    "operationType": "Welding",
+                    "operationTypeName": "Welding",
+                    "processTime": 30,
+                    "timeUnit": "minute"
+                },
+                {
+                    "sequenceNr": 5,
+                    "operationType": "Cutting",
+                    "operationTypeName": "Cutting",
+                    "processTime": 29,
+                    "timeUnit": "minute"
+                }
+            ]
         }
     ],
     "resources": [
@@ -212,35 +417,35 @@
             "resourceName": "cuttingMachine",
             "operationTypeName": "Cutting",
             "operationType": "Cutting",
-            "startTime": "2024-03-03T10:56:14"
+            "earlyStartTime": "2024-03-03T15:22:05"
         },
         {
             "resourceId": "R002",
             "resourceName": "millingMachine",
             "operationTypeName": "Milling",
             "operationType": "Milling",
-            "startTime": "2024-03-03T01:33:37"
+            "earlyStartTime": "2024-03-03T01:51:17"
         },
         {
             "resourceId": "R003",
             "resourceName": "drillingMachine",
             "operationTypeName": "Drilling",
             "operationType": "Drilling",
-            "startTime": "2024-03-03T00:31:28"
+            "earlyStartTime": "2024-03-03T06:38:20"
         },
         {
             "resourceId": "R004",
             "resourceName": "grindingMachine",
             "operationTypeName": "Grinding",
             "operationType": "Grinding",
-            "startTime": "2024-03-03T02:33:54"
+            "earlyStartTime": "2024-03-03T16:56:54"
         },
         {
             "resourceId": "R005",
             "resourceName": "weldingMachine",
             "operationTypeName": "Welding",
             "operationType": "Welding",
-            "startTime": "2024-03-03T01:42:23"
+            "earlyStartTime": "2024-03-03T21:04:24"
         }
     ]
 }

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 import datetime
 from Util import *
 from Assignment import Assignment
@@ -9,11 +9,17 @@ class Product:
         self.productId: str = kwarg["productId"]                    # 产品id
         self.productType: str = kwarg["productType"]                # 产品类型
         self.productSteps: List[ProductStep] = []                   # 产品工序
-        self.planStartTime: datetime = datetime.datetime.min        # 产品开工时间
-        self.planEndTime: datetime = datetime.datetime.max          # 产品完工时间
+        self.planStartTime: datetime = datetime.min                 # 产品开工时间
+        self.planEndTime: datetime = datetime.max                   # 产品完工时间
 
-    def add_product_step(self, productStep: "ProductStep"):
+    def addProductStep(self, productStep: "ProductStep"):
         self.productSteps.append(productStep)
+
+    def calcOrderOfSteps(self):
+        for productStep in self.productSteps:
+            for preProductStep in self.productSteps:
+                if preProductStep.sequenceNr + 1 == productStep.sequenceNr:
+                    productStep.previousStep = preProductStep
 
 
 class Resource:
@@ -22,8 +28,8 @@ class Resource:
         self.resourceName: str = kwargs["resourceName"]                                     # 机器名称
         self.operationType: str = kwargs["operationType"]                                   # 可操作工序类型
         self.operationTypeName: str = kwargs["operationTypeName"]                           # 可操作工序类名称
-        self.earlyStartTime: datetime = datetime.datetime(2000, 1, 1, 0, 0, 0)              # 最早开始时间
-        self.earlyAvailableTime: datetime = datetime.datetime(2000, 1, 1, 0, 0, 0)          # 最早可使用时间
+        self.earlyStartTime: datetime = datetime(2000, 1, 1, 0, 0, 0)                       # 最早开始时间
+        self.earlyAvailableTime: datetime = datetime(2000, 1, 1, 0, 0, 0)                   # 最早可使用时间
         self.assignmentList: List[Assignment] = []                                          # 分配的任务
 
     def calcEarlyAvailableTime(self):
@@ -84,51 +90,51 @@ class Resource:
         else:
             return productStep.processTime
 
-    def adjustAssignmentTime(self, products: dict[str, Product], productSteps: dict[str, "ProductStep"]):
-        """
-        如果考虑第一道工序时间降低25%
-
-        由于在前面计算加工时间时，如果出现第一个产品类型不同的assignment，则它的加工时间默认为产品加工时间
-        但在后面可能分配了相同产品类型的assignment，该assignment存在合并加工的可能，因此需要重新检查判断调整产品的加工时间
-        由于每加入一个assignment都会进行一次时间的调整检查，因此只需要检查当前加入的resource中最后的两个assignment
-            left [-2] 和 right [-1]
-
-            当前资源设备resource的已分配任务assignment的数量 >= 2,需要检查加工时间是否需要重新调整：
-                如果left的加工时间已经为0.75processTime，则表明它已经被考虑为合并加工的状态，则不需要再做进一步调整
-                如果left的加工时间为processTime，则表明它还未被考虑为合并加工状态，则需要进一步判断：
-                    当前right的产品类型与left的产品类型相同时：
-                        left的0.75processTime的结束时间点 t1 和 right的产品的上一工序的结束加工时间 t2 的对比
-                        如果t1 >= t2:
-                            则可以合并加工，对left的加工时间进行调整
-                            如果left的同一产品存在后续已经安排的工序，还需要做进一步调整和检查
-                        否则，不能合并加工，不需要做进一步调整
-                    否则，不能合并加工，不需要做进一步调整
-
-        :param products:
-        :param productSteps:
-        :return:
-        """
-        if len(self.assignmentList) <= 1:
-            return
-        else:
-            left_assignment = self.assignmentList[-2]
-            right_assignment = self.assignmentList[-1]
-            if hhmmss_to_minutes(left_assignment.processDuration) == \
-                    0.75 * productSteps[left_assignment.productStepId].processTime:
-                return
-            else:
-                if products[left_assignment.productId].productType == products[right_assignment.productId].productType:
-                    t1 = hhmmss_to_minutes(left_assignment.prefixEndTime) + \
-                         0.75 * productSteps[left_assignment.productStepId].processTime
-                    t2 = hhmmss_to_minutes(productSteps[right_assignment.productStepId].previousStep.isSchedule.endTime)
-                    if t1 >= t2:
-                        # 则可以合并，需要调整left的加工时间
-                        pass
-                    else:
-                        return
-
-                else:
-                    return
+    # def adjustAssignmentTime(self, products: dict[str, Product], productSteps: dict[str, "ProductStep"]):
+    #     """
+    #     如果考虑第一道工序时间降低25%
+    #
+    #     由于在前面计算加工时间时，如果出现第一个产品类型不同的assignment，则它的加工时间默认为产品加工时间
+    #     但在后面可能分配了相同产品类型的assignment，该assignment存在合并加工的可能，因此需要重新检查判断调整产品的加工时间
+    #     由于每加入一个assignment都会进行一次时间的调整检查，因此只需要检查当前加入的resource中最后的两个assignment
+    #         left [-2] 和 right [-1]
+    #
+    #         当前资源设备resource的已分配任务assignment的数量 >= 2,需要检查加工时间是否需要重新调整：
+    #             如果left的加工时间已经为0.75processTime，则表明它已经被考虑为合并加工的状态，则不需要再做进一步调整
+    #             如果left的加工时间为processTime，则表明它还未被考虑为合并加工状态，则需要进一步判断：
+    #                 当前right的产品类型与left的产品类型相同时：
+    #                     left的0.75processTime的结束时间点 t1 和 right的产品的上一工序的结束加工时间 t2 的对比
+    #                     如果t1 >= t2:
+    #                         则可以合并加工，对left的加工时间进行调整
+    #                         如果left的同一产品存在后续已经安排的工序，还需要做进一步调整和检查
+    #                     否则，不能合并加工，不需要做进一步调整
+    #                 否则，不能合并加工，不需要做进一步调整
+    #
+    #     :param products:
+    #     :param productSteps:
+    #     :return:
+    #     """
+    #     if len(self.assignmentList) <= 1:
+    #         return
+    #     else:
+    #         left_assignment = self.assignmentList[-2]
+    #         right_assignment = self.assignmentList[-1]
+    #         if hhmmss_to_minutes(left_assignment.processDuration) == \
+    #                 0.75 * productSteps[left_assignment.productStepId].processTime:
+    #             return
+    #         else:
+    #             if products[left_assignment.productId].productType == products[right_assignment.productId].productType:
+    #                 t1 = hhmmss_to_minutes(left_assignment.prefixEndTime) + \
+    #                      0.75 * productSteps[left_assignment.productStepId].processTime
+    #                 # t2 = hhmmss_to_minutes(productSteps[right_assignment.productStepId].previousStep.isSchedule.endTime)
+    #                 if t1 >= t2:
+    #                     # 则可以合并，需要调整left的加工时间
+    #                     pass
+    #                 else:
+    #                     return
+    #
+    #             else:
+    #                 return
 
 
 class ProductStep:
@@ -142,8 +148,8 @@ class ProductStep:
         self.processTimeUnit = kwargs["timeUnit"]                       # 处理时间的时间单位
         self.resourcesList: List[Resource] = []                         # 允许加工的机器资源
         self.isSchedule: bool = False                                   # 是否被分配
-        self.previousStep: "ProductStep" = ProductStep()                # 前一个产品步骤
-        self.routingEarlyStart: datetime.datetime = datetime.datetime(2000, 1, 1, 0, 0, 0)  # 产品路线中最早可开始加工时间
+        self.previousStep: Optional["ProductStep"] = None                         # 前一个产品步骤
+        self.routingEarlyStart: datetime = datetime(2000, 1, 1, 0, 0, 0)  # 产品路线中最早可开始加工时间
         self.availableResourceList: List[Resource] = []                 # 可获得的机器资源
 
     # 设置允许加工的机器资源

@@ -75,7 +75,7 @@ def generate_resources():
             "resourceName": resourceName,
             "operationTypeName": operationTypeName,
             "operationType": operationType,
-            "startTime": startTime
+            "earlyStartTime": startTime
         })
 
     # 如果资源数量超过工序数量
@@ -90,7 +90,7 @@ def generate_resources():
             "resourceName": resourceName,
             "operationTypeName": operationTypeName,
             "operationType": operationType,
-            "startTime": startTime
+            "earlyStartTime": startTime
         })
 
     return resources
