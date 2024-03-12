@@ -117,3 +117,7 @@ json_data = json.dumps(data, indent=4)
 # 保存到文件
 with open('instance.json', 'w') as f:
     json.dump(data, f, indent=4)
+
+# 保存到文件
+with open('instance.json', 'w') as f:
+    json.dump(data, f, indent=4)
