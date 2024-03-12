@@ -1,8 +1,4 @@
 {
-    "parameters": {
-        "equipmentUtilizationWeight": 10,
-        "completionTimeWeight": 1
-    },
     "products": [
         {
             "productId": "P001",

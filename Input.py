@@ -1,17 +1,30 @@
+from typing import List
 import datetime
-
 from Util import *
+from Assignment import Assignment
+
+
+class Product:
+    def __init__(self, **kwarg):
+        self.productId: str = kwarg["productId"]                    # 产品id
+        self.productType: str = kwarg["productType"]                # 产品类型
+        self.productSteps: List[ProductStep] = []                   # 产品工序
+        self.planStartTime: datetime = datetime.datetime.min        # 产品开工时间
+        self.planEndTime: datetime = datetime.datetime.max          # 产品完工时间
+
+    def add_product_step(self, productStep: "ProductStep"):
+        self.productSteps.append(productStep)
 
 
 class Resource:
     def __init__(self, **kwargs):
-        self.resourceId = kwargs["resourceId"]  # 机器id
-        self.resourceName = kwargs["resourceName"]  # 机器名称
-        self.operationType = kwargs["operationType"]  # 可操作工序类型
-        self.operationTypeName = kwargs["operationTypeName"]  # 可操作工序类名称
-        self.earlyStartTime = kwargs["earlyStartTime"]  # 最早开始时间
-        self.earlyAvailableTime = datetime.datetime(2000, 1, 1, 0, 0, 0)  # 最早可使用时间
-        self.assignmentList = []  # 分配的任务
+        self.resourceId: str = kwargs["resourceId"]                                         # 机器id
+        self.resourceName: str = kwargs["resourceName"]                                     # 机器名称
+        self.operationType: str = kwargs["operationType"]                                   # 可操作工序类型
+        self.operationTypeName: str = kwargs["operationTypeName"]                           # 可操作工序类名称
+        self.earlyStartTime: datetime = datetime.datetime(2000, 1, 1, 0, 0, 0)              # 最早开始时间
+        self.earlyAvailableTime: datetime = datetime.datetime(2000, 1, 1, 0, 0, 0)          # 最早可使用时间
+        self.assignmentList: List[Assignment] = []                                          # 分配的任务
 
     def calcEarlyAvailableTime(self):
         """
@@ -21,7 +34,7 @@ class Resource:
         if self.assignmentList:
             self.earlyAvailableTime = timestamp_to_minutes(self.assignmentList[-1].endTime)
 
-    def calcPrefixDuration(self, productStep, products):
+    def calcPrefixDuration(self, productStep: "ProductStep", products: dict[str, Product]):
         """
         计算换型时间
         :param productStep:
@@ -36,7 +49,7 @@ class Resource:
         else:
             return 0
 
-    def calcProcessDuration(self, productStep, products):
+    def calcProcessDuration(self, productStep: "ProductStep", products: dict[str, Product]):
         """
         计算处理时间
 
@@ -52,15 +65,15 @@ class Resource:
         :return:
         """
         if self.assignmentList:
-            if not productStep.previewStep:
+            if not productStep.previousStep:
                 if products[self.assignmentList[-1].productId].productType == \
                         products[productStep.productId].productType:
                     return productStep.processTime * 0.75
                 else:
                     return productStep.processTime
             else:
-                if productStep.previewStep.isSchedule:
-                    previewAssignment = productStep.previewStep.isSchedule
+                if productStep.previousStep.isSchedule:
+                    previewAssignment = productStep.previousStep.isSchedule
                     t1 = timestamp_to_minutes(previewAssignment.endTime)
                     t2 = timestamp_to_minutes(self.assignmentList[-1].endTime)
                     if t1 <= t2 and products[self.assignmentList[-1].productId].productType == \
@@ -71,7 +84,7 @@ class Resource:
         else:
             return productStep.processTime
 
-    def adjustAssignmentTime(self, products, productSteps):
+    def adjustAssignmentTime(self, products: dict[str, Product], productSteps: dict[str, "ProductStep"]):
         """
         如果考虑第一道工序时间降低25%
 
@@ -107,7 +120,7 @@ class Resource:
                 if products[left_assignment.productId].productType == products[right_assignment.productId].productType:
                     t1 = hhmmss_to_minutes(left_assignment.prefixEndTime) + \
                          0.75 * productSteps[left_assignment.productStepId].processTime
-                    t2 = hhmmss_to_minutes(productSteps[right_assignment.productStepId].previewStep.isSchedule.endTime)
+                    t2 = hhmmss_to_minutes(productSteps[right_assignment.productStepId].previousStep.isSchedule.endTime)
                     if t1 >= t2:
                         # 则可以合并，需要调整left的加工时间
                         pass
@@ -116,3 +129,26 @@ class Resource:
 
                 else:
                     return
+
+
+class ProductStep:
+    def __init__(self, **kwargs):
+        self.productStepId: str = kwargs["productStepId"]               # 产品步骤id  产品id-步骤工序类型-步骤编号
+        self.productId: str = kwargs["productId"]                       # 产品id
+        self.productType: str = kwargs["productType"]                   # 产品类型
+        self.operationType = kwargs["operationType"]                    # 工序类型
+        self.sequenceNr: int = kwargs["sequenceNr"]                     # 加工顺序
+        self.processTime: float = kwargs["processTime"]                 # 处理时间
+        self.processTimeUnit = kwargs["timeUnit"]                       # 处理时间的时间单位
+        self.resourcesList: List[Resource] = []                         # 允许加工的机器资源
+        self.isSchedule: bool = False                                   # 是否被分配
+        self.previousStep: "ProductStep" = ProductStep()                # 前一个产品步骤
+        self.routingEarlyStart: datetime.datetime = datetime.datetime(2000, 1, 1, 0, 0, 0)  # 产品路线中最早可开始加工时间
+        self.availableResourceList: List[Resource] = []                 # 可获得的机器资源
+
+    # 设置允许加工的机器资源
+    def setResourceList(self, resources: dict[str, Resource]):
+        for resource in resources.values():
+            if resource.operationType == self.operationType:
+                self.resourcesList.append(resource)
+

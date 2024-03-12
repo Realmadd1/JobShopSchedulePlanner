@@ -1,8 +1,6 @@
 import time
 
-from Product import *
-from ProductStep import *
-from Resource import *
+from Input import *
 from KPIs import *
 from Plot import draw
 from Model import MIPModel
@@ -27,29 +25,22 @@ class JobShopSchedulePlanner:
             self.input_data = json.loads(fp.read())  # 转化为字典格式
 
     def sync_data(self):
-        # 优化参数
-        self.optimized_parameter["equipmentUtilization"] = KPI_equipmentUtilization(
-            self.input_data["parameters"]["equipmentUtilizationWeight"])  # 优化参数：设备利用率
-        self.optimized_parameter["completionTime"] = KPI_completionTime(
-            self.input_data["parameters"]["completionTimeWeight"])          # 优化参数：整体完成时间
         # 产品
         productsDetail = self.input_data["products"]
-        productStepId = 1
         for productDetail in productsDetail:
             product = Product(productId=productDetail["productId"], productType=productDetail["productType"])
             self.products[product.productId] = product
-            previewStep = None
+            previousStep = None
             for productStepDetail in productDetail["sequences"]:
                 productStep = ProductStep(
-                    productStepId=productStepId, operationType=productStepDetail["operationType"],
+                    operationType=productStepDetail["operationType"],
                     productId=productDetail["productId"], productType=productDetail["productType"],
                     sequenceNr=productStepDetail["sequenceNr"], processTime=productStepDetail["processTime"],
-                    timeUnit=productStepDetail["timeUnit"], previewStep=previewStep
+                    timeUnit=productStepDetail["timeUnit"], previewStep=previousStep
                 )
                 self.productSteps[productStep.productStepId] = productStep
                 product.add_product_step(productStep)  # 将产品步骤对象加入产品对象中
-                productStepId += 1
-                previewStep = productStep
+                previousStep = productStep
 
         # 设备资源
         resourcesDetail = self.input_data["resources"]

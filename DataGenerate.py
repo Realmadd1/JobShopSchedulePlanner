@@ -13,7 +13,6 @@ def generate_products():
     product_type_list.extend(["A"] * typeANum + ["B"] * typeBNum + ["C"] * typeCNum)
     for i in range(1, productNum + 1):
         product_type = product_type_list.pop(random.randint(0, len(product_type_list) - 1))
-
         # 使用相同的随机种子确保相同产品类型的操作顺序一致
         random.seed(product_type)
         operation_sequence = operation_list.copy()
