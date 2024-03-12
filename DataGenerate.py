@@ -29,7 +29,7 @@ def generate_products():
                 "timeUnit": "minute"
             })
         products.append({
-            "productId": i,
+            "productId": 'P' + str(i).zfill(3),
             "productType": product_type,
             "sequences": sequences
         })
@@ -71,7 +71,7 @@ def generate_resources():
         # 为每个资源生成唯一的随机startTime
         startTime = generate_random_time()
         resources.append({
-            "resourceId": i + 1,  # 资源ID从1开始
+            "resourceId": 'R' + str(i+1).zfill(3),  # 资源ID从1开始
             "resourceName": resourceName,
             "operationTypeName": operationTypeName,
             "operationType": operationType,
@@ -97,9 +97,9 @@ def generate_resources():
 
 
 # 生成数据
-productNum = 5  # 产品数量
+productNum = 10  # 产品数量
 resourceNum = 5  # 机器数量
-operationNum = 5  # 工序数量
+operationNum = 8  # 工序数量
 equipmentUtilization = 10  # 设备利用率权重
 completionTime = 1  # 完成时间权重
 data = {
