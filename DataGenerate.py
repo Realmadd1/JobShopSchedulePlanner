@@ -65,6 +65,7 @@ def generate_resources():
     #     raise "数据错误！缺少可处理工序的机器"
 
     # 确保每个工序至少被分配一次
+
     for i in range(min(resourceNum, operationNum)):
         operationType, resourceName, operationTypeName = operation_types[i]
 
@@ -75,7 +76,7 @@ def generate_resources():
             "resourceName": resourceName,
             "operationTypeName": operationTypeName,
             "operationType": operationType,
-            "startTime": startTime
+            "earlyStartTime": startTime
         })
 
     # 如果资源数量超过工序数量
@@ -86,7 +87,7 @@ def generate_resources():
         # 为每个资源生成唯一的随机startTime
         startTime = generate_random_time()
         resources.append({
-            "resourceId": i + 1,
+            "resourceId":  'R' + str(i+1).zfill(3),
             "resourceName": resourceName,
             "operationTypeName": operationTypeName,
             "operationType": operationType,
@@ -98,8 +99,8 @@ def generate_resources():
 
 # 生成数据
 productNum = 10  # 产品数量
-resourceNum = 5  # 机器数量
-operationNum = 8  # 工序数量
+resourceNum = 10  # 机器数量
+operationNum = 5  # 工序数量
 
 data = {
     "products": generate_products(),
@@ -113,6 +114,4 @@ json_data = json.dumps(data, indent=4)
 with open('instance.json', 'w') as f:
     json.dump(data, f, indent=4)
 
-# 保存到文件
-with open('instance.json', 'w') as f:
-    json.dump(data, f, indent=4)
+
