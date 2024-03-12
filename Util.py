@@ -34,3 +34,9 @@ def timestamp_to_minutes(timestamp_str):
     total_seconds = (timestamp_obj - datetime(2024, 3, 1)).total_seconds()
     minutes = total_seconds / 60
     return minutes
+
+# 将时间戳字符串转换回datetime格式
+def change_to_datetime(timestamp_str):
+    formatted_time = datetime.strptime(timestamp_str, "%Y-%m-%dT%H:%M:%S")
+
+    return formatted_time
