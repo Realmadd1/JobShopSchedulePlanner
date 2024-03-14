@@ -79,7 +79,10 @@ class ASAPMethod:
         assignment.productStepId = productStep.productStepId
         assignment.operationType = resource.operationType
         if productStep.previousStep:
-            preTime = productStep.previousStep.isSchedule.endTime
+            if productStep.previousStep.isSchedule:
+                preTime = productStep.previousStep.isSchedule.endTime
+            else:
+                preTime = datetime(2000, 1, 1, 0, 0, 0)
         else:
             preTime = datetime(2000, 1, 1, 0, 0, 0)
         startTime = max(resource.earlyAvailableTime, preTime)

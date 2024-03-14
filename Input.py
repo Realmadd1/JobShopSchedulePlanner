@@ -29,7 +29,7 @@ class Resource:
         self.resourceName: str = kwargs["resourceName"]                                     # 机器名称
         self.operationType: str = kwargs["operationType"]                                   # 可操作工序类型
         self.operationTypeName: str = kwargs["operationTypeName"]                           # 可操作工序类名称
-        self.earlyStartTime: datetime = datetime(2000, 1, 1, 0, 0, 0)                       # 最早开始时间
+        self.earlyStartTime: datetime = kwargs["earlyStartTime"]                            # 最早开始时间
         self.earlyAvailableTime: datetime = datetime(2000, 1, 1, 0, 0, 0)                   # 最早可使用时间
         self.assignmentList: List[Assignment] = []                                          # 分配的任务
 
@@ -40,6 +40,8 @@ class Resource:
         """
         if self.assignmentList:
             self.earlyAvailableTime = self.assignmentList[-1].endTime
+        else:
+            self.earlyAvailableTime = self.earlyStartTime
 
     def calcPrefixDuration(self, productStep: "ProductStep", products: dict[str, Product]):
         """
