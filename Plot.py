@@ -27,10 +27,6 @@ def draw(schPlanner, assignments):
         ax.broken_barh([(processStartTime, processDuration)], (int(resource[2:]) - 0.4, 0.6), facecolors=colors[color_index],
                        edgecolor='white')
 
-        # 绘制 prefixDuration 部分（如果存在）
-        if prefixDuration:
-            ax.broken_barh([(prefixStartTime, prefixDuration)], (int(resource[2:]) - 0.4, 0.6),
-                           facecolors=fixedColors[fixedColors_index], edgecolor='white')
         # 在绘制 processDuration 部分和 prefixDuration 部分时，将它们组合为一个块
         if prefixDuration:
             ax.broken_barh([(prefixStartTime, prefixDuration)], (int(resource[2:]) - 0.4, 0.6),

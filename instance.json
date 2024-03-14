@@ -417,70 +417,70 @@
             "resourceName": "cuttingMachine",
             "operationTypeName": "Cutting",
             "operationType": "Cutting",
-            "earlyStartTime": "2024-03-03T15:22:05"
+            "earlyStartTime": "2024-03-10T00:00:00"
         },
         {
             "resourceId": "R002",
             "resourceName": "millingMachine",
             "operationTypeName": "Milling",
             "operationType": "Milling",
-            "earlyStartTime": "2024-03-03T01:51:17"
+            "earlyStartTime": "2024-03-10T00:00:00"
         },
         {
             "resourceId": "R003",
             "resourceName": "drillingMachine",
             "operationTypeName": "Drilling",
             "operationType": "Drilling",
-            "earlyStartTime": "2024-03-03T06:38:20"
+            "earlyStartTime": "2024-03-10T00:00:00"
         },
         {
             "resourceId": "R004",
             "resourceName": "grindingMachine",
             "operationTypeName": "Grinding",
             "operationType": "Grinding",
-            "earlyStartTime": "2024-03-03T16:56:54"
+            "earlyStartTime": "2024-03-10T00:00:00"
         },
         {
             "resourceId": "R005",
             "resourceName": "weldingMachine",
             "operationTypeName": "Welding",
             "operationType": "Welding",
-            "earlyStartTime": "2024-03-03T21:04:24"
+            "earlyStartTime": "2024-03-10T00:00:00"
         },
         {
             "resourceId": "R006",
             "resourceName": "cuttingMachine",
             "operationTypeName": "Cutting",
             "operationType": "Cutting",
-            "earlyStartTime": "2024-03-03T18:57:47"
+            "earlyStartTime": "2024-03-10T00:00:00"
         },
         {
             "resourceId": "R007",
-            "resourceName": "weldingMachine",
-            "operationTypeName": "Welding",
-            "operationType": "Welding",
-            "earlyStartTime": "2024-03-03T17:48:59"
+            "resourceName": "millingMachine",
+            "operationTypeName": "Milling",
+            "operationType": "Milling",
+            "earlyStartTime": "2024-03-10T00:00:00"
         },
         {
             "resourceId": "R008",
-            "resourceName": "cuttingMachine",
-            "operationTypeName": "Cutting",
-            "operationType": "Cutting",
-            "earlyStartTime": "2024-03-03T03:56:00"
+            "resourceName": "drillingMachine",
+            "operationTypeName": "Drilling",
+            "operationType": "Drilling",
+            "earlyStartTime": "2024-03-10T00:00:00"
         },
         {
             "resourceId": "R009",
             "resourceName": "grindingMachine",
             "operationTypeName": "Grinding",
             "operationType": "Grinding",
-            "earlyStartTime": "2024-03-03T16:59:58"
+            "earlyStartTime": "2024-03-10T00:00:00"
         },
         {
             "resourceId": "R010",
-            "resourceName": "drillingMachine",
-            "operationTypeName": "Drilling",
-            "operationType": "Drilling",
-            "earlyStartTime": "2024-03-03T08:31:55"
+            "resourceName": "weldingMachine",
+            "operationTypeName": "Welding",
+            "operationType": "Welding",
+            "earlyStartTime": "2024-03-10T00:00:00"
         }
     ]
 }

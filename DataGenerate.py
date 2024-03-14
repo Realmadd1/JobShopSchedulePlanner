@@ -39,13 +39,13 @@ def generate_products():
 
 
 def generate_random_time():
-    # 随机生成小时、分钟和秒
-    hour = random.randint(0, 23)    # 0到23小时
-    minute = random.randint(0, 59)  # 0到59分钟
-    second = random.randint(0, 59)  # 0到59秒
+    # 生成小时、分钟和秒
+    hour = 0    # 0
+    minute = 0  # 0
+    second = 0  # 0
 
     # 格式化为两位数字符串
-    time_str = f"2024-03-03T{hour:02d}:{minute:02d}:{second:02d}"
+    time_str = f"2024-03-10T{hour:02d}:{minute:02d}:{second:02d}"
 
     return time_str
 
