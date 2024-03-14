@@ -20,7 +20,7 @@ class Product:
         preProductStep = None
         for productStep in self.productSteps:
             productStep.previousStep = preProductStep
-            productStep = productStep
+            preProductStep = productStep
 
 
 class Resource:
@@ -166,4 +166,6 @@ class ProductStep:
     def calcProcessTime(self):
         if self.processTimeUnit == "minute":
             self.processTime = timedelta(self.processTimeB/(60*12))
+
+
 

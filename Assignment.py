@@ -33,7 +33,7 @@ class Assignment:
         self.processStartTime = self.prefixEndTime
 
     def calcProcessEndTime(self):
-        self.processEndTime = self.processStartTime + self.processDuration
+        self.processEndTime = self.prefixStartTime + self.prefixDuration + self.processDuration
 
     def setTime(self, prefixStartTime: datetime, prefixDuration: datetime.timedelta, processDuration: datetime.timedelta):
         self.prefixStartTime = prefixStartTime
